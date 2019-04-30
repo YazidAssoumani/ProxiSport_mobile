@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, ImageBackground, Image, TextInput, Dimensions, TouchableOpacity, TouchableNativeFeedback} from 'react-native';
+import {AsyncStorage, Platform, StyleSheet, Text, View, ImageBackground, Image, TextInput, Dimensions, TouchableOpacity, TouchableNativeFeedback} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 type Props = {};
 export default class Dashboard extends Component<Props> {
@@ -27,6 +28,7 @@ export default class Dashboard extends Component<Props> {
         fetch(
             'http://proxisport.it-students.fr/login', {
               method:'POST',
+              credentials: 'same-origin',
               headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -36,7 +38,21 @@ export default class Dashboard extends Component<Props> {
                 password: this.state.identificationPassword,
               }),
             })
-            .then((response) => response.json())
+            .then((response) => {
+              var cookies = {};
+              console.log(response);
+              var cooks = response.headers.map['set-cookie'].split(';');
+              for (var i in cooks) {
+                var [name, value] = cooks[i].trim().split('=');
+                console.log(name, value);
+                cookies[name] = value ;
+              }
+              console.log(cookies);
+              alert('token : ' +cookies.token);
+              AsyncStorage.setItem('token', cookies.token);
+              return response.json();
+
+            })
             .then((datas)=>{
               if(datas.message == "ok") {
                 this.props.setParentState({isLogged : true}) ;
@@ -46,6 +62,10 @@ export default class Dashboard extends Component<Props> {
                 this.setState({identificationPassword:''})
                 alert(datas.message) ;
               }
+            })
+            .catch(function (error) {
+              console.log('Probleme fetch login');
+              throw error;
             })
         }      
 
