@@ -8,10 +8,10 @@ type Props = {};
 export default class Dashboard extends Component<Props> {
 
     state ={
-        showPass: true,
-        identificationLogin : '',
-        identificationPassword : ''
-    }
+      showPass: true,
+      identificationLogin : 'test@test.fr',
+      identificationPassword : 'azerty'
+  }
 
     
   showPass = () => {
@@ -73,7 +73,7 @@ export default class Dashboard extends Component<Props> {
         return(
             <View style={styles.login}>
                   <View style={{flexDirection:'row'}}>
-                    <TextInput autoCapitalize='none' style={styles.input} placeholder="Email" onChangeText={(text)=>{this.setState({identificationLogin:text})}} />
+                    <TextInput autoCapitalize='none' style={styles.input} placeholder="Email" onChangeText={(text)=>{this.setState({identificationLogin:text})}} value={this.state.identificationLogin} />
                     <Icone name={'email'} size={28} color={'rgba(0, 0, 0, 1)'} 
                   style={styles.inputIcon} />
                     
