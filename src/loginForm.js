@@ -7,7 +7,7 @@ type Props = {};
 export default class Dashboard extends Component<Props> {
 
     state ={
-        showPass: true,
+        showPass: false,
         identificationLogin : '',
         identificationPassword : ''
     }
