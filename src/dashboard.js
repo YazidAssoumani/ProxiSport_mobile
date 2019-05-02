@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
-import { View, TextInput, Dimensions } from 'react-native';
+import { View, TextInput, Dimensions, FlatList } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
 export default class Dashboard extends Component<Props> {
     state = {
         coords : {
-            latitude: 45.75,
-            longitude: 4.85,
+            latitude: 46.1531,
+            longitude: 4.9206,
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121
         },
         coords_marker : {
-            latitude: 45.75,
-            longitude: 4.85,
+            latitude: 46.15,
+            longitude: 4.92,
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121
         },
@@ -25,9 +25,15 @@ export default class Dashboard extends Component<Props> {
         markers: []
     }
 
-    componentWillMount() {
-
-        fetch('http://proxisport.it-students.fr/map', {
+    _onRegionChangeComplete(region) {
+        console.log(region)
+        var url = 'http://192.168.33.10:3000/map?'+
+        'boundsNE[lat]=' + (region.latitude + region.latitudeDelta).toString() + 
+        '&boundsNE[lng]=' + (region.longitude + region.longitudeDelta).toString() + 
+        '&boundsSW[lat]=' + (region.latitude - region.latitudeDelta).toString() + 
+        '&boundsSW[lng]=' + (region.longitude - region.longitudeDelta).toString() ;
+        console.log(url)
+        fetch(url, {
            method: 'GET',
            credentials: 'same-origin',
            headers: {
@@ -36,9 +42,14 @@ export default class Dashboard extends Component<Props> {
         })
          .then((response) => response.json())
          .then((datas) => {
+             console.log(datas)
+             for (var i in datas) {
+                 datas[i].key = datas[i]._id
+             }
            this.setState({
               markers: datas
            })
+           console.log(this.state.markers)
          }).catch(function (error) { // Pour le warning d'erreur "unhandled promise rejection"
          console.log('There has been a problem with your fetch operation: ' + error.message);
           // ADD THIS THROW error
@@ -49,9 +60,18 @@ export default class Dashboard extends Component<Props> {
     render() {
         return (
             <View style={{ flex:1}}>
-                <MapView style={styles.map} provider={PROVIDER_GOOGLE} initialRegion={this.state.coords}>
-                    <Marker coordinate={this.state.coords_marker} />
-                    <Marker coordinate={this.state.coords_marker2} />
+                <MapView style={styles.map} 
+                provider={PROVIDER_GOOGLE} 
+                initialRegion={this.state.coords}
+                onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
+                >
+                    {
+                    this.state.markers.map(marker => {
+                        return (
+                            <Marker coordinate={{latitude: JSON.parse(marker.coords.lat), longitude: JSON.parse(marker.coords.lng)}}/>
+                            )
+                        })
+                    }
                     <TextInput 
                         style={styles.input}
                         autoCapitalize={'none'}

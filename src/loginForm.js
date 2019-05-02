@@ -40,7 +40,7 @@ export default class Dashboard extends Component<Props> {
             })
             .then((response) => {
               var cookies = {};
-              console.log(response);
+//              console.log(response);
               var cooks = response.headers.map['set-cookie'].split(';');
               for (var i in cooks) {
                 var [name, value] = cooks[i].trim().split('=');
@@ -56,7 +56,7 @@ export default class Dashboard extends Component<Props> {
               if(datas.message == "ok") {
                 this.props.setParentState({isLogged : true}) ;
                 console.log(this.state)
-                alert('Vous êtes connecté')
+//                alert('Vous êtes connecté')
               } else {
                 this.setState({identificationPassword:''})
                 alert(datas.message) ;
