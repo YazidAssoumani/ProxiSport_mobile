@@ -48,7 +48,6 @@ export default class Dashboard extends Component<Props> {
                 cookies[name] = value ;
               }
               console.log(cookies);
-              alert('token : ' +cookies.token);
               AsyncStorage.setItem('token', cookies.token);
               return response.json();
 
@@ -93,6 +92,11 @@ export default class Dashboard extends Component<Props> {
                   <TouchableOpacity onPress={()=>{this.props.setParentState({islogin: false});}} style={styles.button}>
                     <Text style={styles.text_button}> Créer un compte </Text>
                   </TouchableOpacity>
+                  <View>
+                    <TouchableOpacity onPress={() => {Linking.openURL("http://proxisport.it-students.fr/cgu")} }>
+                            <Text style={styles.text_button}> CGU </Text>       
+                    </TouchableOpacity>
+                  </View>
                 </View>
         )
     }

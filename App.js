@@ -17,7 +17,7 @@ import LoginForm from './src/loginForm.js';
 import ButtonUser from './src/buttonUser.js';
 import {AsyncStorage} from 'react-native';
 
-const {width} = Dimensions.get('window')
+const {height, width} = Dimensions.get('window');
 console.log(width)
 
 type Props = {};
@@ -36,32 +36,35 @@ export default class App extends Component<Props> {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <View style={styles.container}>
-            <View>
-              <Image source={require('./assets/images/logo.png')} style={styles.logo}/>
-            </View>
 
             {
               (this.state.buttonUser) ? (
-                <ButtonUser setParentState={this.setState.bind(this)}/>
+                <View>
+                  <Image source={require('./assets/images/logo.png')} style={styles.logo}/>
+                  <ButtonUser setParentState={this.setState.bind(this)}/>
+                </View>
+                
               ) : (
                 (this.state.isLogged) ? (
                   <Dashboard />
                 ) : (
                   (this.state.islogin) ? (
-
-                    <LoginForm setParentState={this.setState.bind(this)} />
+                    <View>
+                      <Image source={require('./assets/images/logo.png')} style={styles.logo}/>
+                      <LoginForm setParentState={this.setState.bind(this)} />
+                    </View>
+                    
                   ) : (
+                    <View>
+                      <Image source={require('./assets/images/logo.png')} style={styles.logo}/>
                       <AccountForm setParentState={this.setState.bind(this)}/>
+                    </View>
+                      
                   )
                 )
               )
             }
 
-            <View>
-              <TouchableOpacity onPress={() => {Linking.openURL("http://proxisport.it-students.fr/cgu")} }>
-                      <Text style={styles.text_button}> CGU </Text>       
-              </TouchableOpacity>
-            </View>
             <View></View>
         </View>
       </ImageBackground>
