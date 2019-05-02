@@ -27,7 +27,7 @@ export default class Dashboard extends Component<Props> {
 
     _onRegionChangeComplete(region) {
         console.log(region)
-        var url = 'http://192.168.33.10:3000/map?'+
+        var url = 'http://proxisport.it-students.fr/map?'+
         'boundsNE[lat]=' + (region.latitude + region.latitudeDelta).toString() + 
         '&boundsNE[lng]=' + (region.longitude + region.longitudeDelta).toString() + 
         '&boundsSW[lat]=' + (region.latitude - region.latitudeDelta).toString() + 
