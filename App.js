@@ -65,7 +65,6 @@ export default class App extends Component<Props> {
               )
             }
 
-            <View></View>
         </View>
       </ImageBackground>
     );

@@ -60,6 +60,14 @@ export default class Dashboard extends Component<Props> {
     render() {
         return (
             <View style={{ flex:1}}>
+                <View>
+                    <TextInput 
+                        style={styles.input}
+                        autoCapitalize={'none'}
+                        placeholder="Recherche"
+                        onChangeText={()=>{}}
+                    />
+                </View>
                 <MapView style={styles.map} 
                 provider={PROVIDER_GOOGLE} 
                 initialRegion={this.state.coords}
@@ -72,13 +80,14 @@ export default class Dashboard extends Component<Props> {
                             )
                         })
                     }
+                    <View>
                     <TextInput 
                         style={styles.input}
                         autoCapitalize={'none'}
                         placeholder="Recherche"
                         onChangeText={()=>{}}
                     />
-                
+                    </View>
                 </MapView>
             </View>
         );
@@ -103,7 +112,7 @@ const styles = {
         marginBottom: 10,
     },
     map: {
-        height: height,
+        height: height -40,
         width: width,
         flex:1,
         margin:0,
@@ -111,15 +120,14 @@ const styles = {
     },
     input: {
       height: 40,
+      marginTop: 0,
       marginLeft: 3,
       marginRight: 3,
       borderColor:'silver',
       borderWidth:1,
-      alignSelf: 'stretch',
-      //flex: 1,
       paddingHorizontal: 5,
-      marginTop: 50,
       borderRadius: 200,
+      backgroundColor: 'white'
     },
 };
 
