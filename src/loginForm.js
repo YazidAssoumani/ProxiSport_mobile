@@ -40,7 +40,7 @@ export default class Dashboard extends Component<Props> {
             })
             .then((response) => {
               var cookies = {};
-              console.log(response);
+//              console.log(response);
               var cooks = response.headers.map['set-cookie'].split(';');
               for (var i in cooks) {
                 var [name, value] = cooks[i].trim().split('=');
@@ -48,7 +48,6 @@ export default class Dashboard extends Component<Props> {
                 cookies[name] = value ;
               }
               console.log(cookies);
-              alert('token : ' +cookies.token);
               AsyncStorage.setItem('token', cookies.token);
               return response.json();
 
@@ -57,7 +56,7 @@ export default class Dashboard extends Component<Props> {
               if(datas.message == "ok") {
                 this.props.setParentState({isLogged : true}) ;
                 console.log(this.state)
-                alert('Vous êtes connecté')
+//                alert('Vous êtes connecté')
               } else {
                 this.setState({identificationPassword:''})
                 alert(datas.message) ;
@@ -93,6 +92,11 @@ export default class Dashboard extends Component<Props> {
                   <TouchableOpacity onPress={()=>{this.props.setParentState({islogin: false});}} style={styles.button}>
                     <Text style={styles.text_button}> Créer un compte </Text>
                   </TouchableOpacity>
+                  <View>
+                    <TouchableOpacity onPress={() => {Linking.openURL("http://proxisport.it-students.fr/cgu")} }>
+                            <Text style={styles.text_button}> CGU </Text>       
+                    </TouchableOpacity>
+                  </View>
                 </View>
         )
     }

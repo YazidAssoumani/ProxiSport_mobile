@@ -95,6 +95,11 @@ export default class Dashboard extends Component<Props> {
                   <TouchableOpacity onPress={()=>{this.props.setParentState({islogin: true});}} style={styles.button}>
                     <Text style={styles.text_button}> Retour </Text>
                   </TouchableOpacity>
+                  <View>
+                    <TouchableOpacity onPress={() => {Linking.openURL("http://proxisport.it-students.fr/cgu")} }>
+                            <Text style={styles.text_button}> CGU </Text>       
+                    </TouchableOpacity>
+                  </View>
             </View>
         )
     }

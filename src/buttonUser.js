@@ -19,6 +19,9 @@ export default class ButtonUser extends Component<Props> {
                     <Text style={styles.text_button}> Connexion </Text>
                   </TouchableOpacity>
                   </View>
+              <TouchableOpacity onPress={() => {Linking.openURL("http://proxisport.it-students.fr/cgu")} }>
+                      <Text style={styles.text_button}> CGU </Text>       
+              </TouchableOpacity>
             </View>
         )
     }
