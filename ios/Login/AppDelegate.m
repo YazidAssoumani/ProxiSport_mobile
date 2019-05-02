@@ -16,7 +16,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [GMSServices provideAPIKey:@"AIzaSyCkRGG0Pf8v2w2CDLHzDtQQ4aij68pFans"];
+  [GMSServices provideAPIKey:@"AIzaSyB1J4K8WaIXRUifsbpyHasElywzjXDWyaE"];
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"Login"

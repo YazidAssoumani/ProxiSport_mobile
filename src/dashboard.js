@@ -127,7 +127,7 @@ const styles = {
       borderWidth:1,
       paddingHorizontal: 5,
       borderRadius: 200,
-      backgroundColor: 'white'
+      backgroundColor: 'white',
     },
 };
 
