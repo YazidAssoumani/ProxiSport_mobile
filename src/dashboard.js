@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, TextInput, Dimensions, FlatList } from 'react-native';
+import { View, TextInput, Dimensions, FlatList, Modal, Text } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
 export default class Dashboard extends Component<Props> {
@@ -22,8 +22,13 @@ export default class Dashboard extends Component<Props> {
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121
         },
-        markers: []
+        markers: [],
+        modalVisible: false,
+        currentMarker : {}
     }
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+      }
 
     _onRegionChangeComplete(region) {
         console.log(region)
@@ -56,11 +61,31 @@ export default class Dashboard extends Component<Props> {
           throw error;
           });
         }
+        _onPress (marker) {
+            console.log("maker clické")
+            console.log(marker) ;
+            this.setState({currentMarker : marker})
+            this.setModalVisible(true) ;
+        }
     
     render() {
         return (
             <View style={{ flex:1}}>
-                <MapView style={styles.map} 
+            <Modal
+                animationType="slide"
+                transparent={false}
+                visible={this.state.modalVisible}
+                style={{paddingTop:30}}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                }}>
+                <View style={{marginTop: 52}}>
+                    <View style={{textAlign:"center"}}>
+                        <Text style={{textAlign:"center"}}>{this.state.currentMarker.nom}</Text>
+                    </View>
+                </View>
+            </Modal>
+            <MapView style={styles.map} 
                 provider={PROVIDER_GOOGLE} 
                 initialRegion={this.state.coords}
                 onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
@@ -68,7 +93,10 @@ export default class Dashboard extends Component<Props> {
                     {
                     this.state.markers.map(marker => {
                         return (
-                            <Marker coordinate={{latitude: JSON.parse(marker.coords.lat), longitude: JSON.parse(marker.coords.lng)}}/>
+                            <Marker 
+                                coordinate={{latitude: JSON.parse(marker.coords.lat), longitude: JSON.parse(marker.coords.lng)}}
+                                onPress={()=>{this._onPress(marker)}}
+                                />
                             )
                         })
                     }
