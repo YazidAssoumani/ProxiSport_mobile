@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, ImageBackground, Image, TextInput, Dimensions, TouchableOpacity, TouchableNativeFeedback} from 'react-native';
+import {Platform, StyleSheet, Text, View, ImageBackground, Image, TextInput, 
+Linking, Dimensions, TouchableOpacity, TouchableNativeFeedback} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -14,15 +15,17 @@ export default class ButtonUser extends Component<Props> {
         return(
             <View style={styles.login}>
 
-                  <View style={{flexDirection:'row'}}>
+                  <View style={{flexDirection:'column'}}>
                   <TouchableOpacity onPress={()=>{this.props.setParentState({buttonUser: !this.state.User});}} style={styles.buttonUser}>
                     <Text style={styles.text_button}> Connexion </Text>
                   </TouchableOpacity>
-                  </View>
+                 </View> 
+
               <TouchableOpacity onPress={() => {Linking.openURL("http://proxisport.it-students.fr/cgu")} }>
                       <Text style={styles.text_button}> CGU </Text>       
               </TouchableOpacity>
-            </View>
+           
+            </View> 
         )
     }
 }

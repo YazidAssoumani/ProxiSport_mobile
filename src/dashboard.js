@@ -30,8 +30,18 @@ export default class Dashboard extends Component<Props> {
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121
         },
-        markers: []
+        markers: [],
+        modalVisible: false,
+        currentMarker : {}
     }
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+      }
+
+
+  closeModal() {
+    this.setState({modalVisible:false});
+  }
 
     _onRegionChangeComplete(region) {
         console.log(region)
