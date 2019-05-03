@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import { View, TextInput, Dimensions, FlatList, Modal, Text } from 'react-native';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import { View, TextInput, Dimensions, FlatList, Modal, Text, TouchableHighlight,TouchableOpacity } from 'react-native';
+import MapView, {Marker, PROVIDER_GOOGLE, Button} from 'react-native-maps';
+
+
 
 export default class Dashboard extends Component<Props> {
     state = {
@@ -29,6 +31,11 @@ export default class Dashboard extends Component<Props> {
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
       }
+
+
+  closeModal() {
+    this.setState({modalVisible:false});
+  }
 
     _onRegionChangeComplete(region) {
         console.log(region)
@@ -62,29 +69,76 @@ export default class Dashboard extends Component<Props> {
           });
         }
         _onPress (marker) {
-            console.log("maker clické")
+            console.log("marker clicked")
             console.log(marker) ;
             this.setState({currentMarker : marker})
             this.setModalVisible(true) ;
         }
+
+///ajouter commentaire////
+        _onCreate(){
+
+            fetch(
+                'http://proxisport.it-students.fr/users', {
+                  method:'POST',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    nom: this.state.createNom,
+                    prenom: this.state.createPrenom,
+                    birth: this.state.createBirth,
+                    email: this.state.createEmail,
+                    password: this.state.createPassword,
+                  }),
+                })
+                .then((response) => response.json())
+                .then((datas)=>{
+                    console.log(datas);
+                  if(datas.message == 'ok') {
+                    alert("compte créer :)")
+                    this.props.setParentState({isLogged : true}) ;
+                    console.log(this.state)
+                  }
+                  else {
+                    alert(datas.message) ;
+                  }
+                })
+            } 
+        /////fin ajout commentaire///
     
     render() {
         return (
             <View style={{ flex:1}}>
-            <Modal
+            <Modal   
                 animationType="slide"
                 transparent={false}
                 visible={this.state.modalVisible}
-                style={{paddingTop:30}}
+                style={{paddingTop:130}}
                 onRequestClose={() => {
                     Alert.alert('Modal has been closed.');
                 }}>
-                <View style={{marginTop: 52}}>
+                <View style={{marginTop: 82}}>
                     <View style={{textAlign:"center"}}>
-                        <Text style={{textAlign:"center"}}>{this.state.currentMarker.nom}</Text>
+                        <Text style={styles.text} style={{textAlign:"center"}}> Déscription de l'endroit:
+                        {'\n'+this.state.currentMarker.nom+ '\n'}
+                           {this.state.currentMarker.AnneeServiceLib+ '\n'}
+                           {this.state.currentMarker.NatureLibelle+ '\n'}
+                           {this.state.currentMarker.NatureSolLib}
+                        </Text>
+                        
+                        <TouchableOpacity style={{justifyContent:"center"}} onPress={() => {
+                            this.setState({modalVisible: false})
+                            } }>
+
+                        <Text style={styles.text_button }> close </Text>
+                        </TouchableOpacity>    
                     </View>
                 </View>
             </Modal>
+
+  
             <MapView style={styles.map} 
                 provider={PROVIDER_GOOGLE} 
                 initialRegion={this.state.coords}
@@ -150,5 +204,13 @@ const styles = {
       borderRadius: 200,
       backgroundColor: 'white',
     },
+
+    text_button: {
+       
+        paddingTop:50,
+        fontSize: 30,
+        fontWeight: '200',
+        color: 'red',
+      }
 };
 
