@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, TextInput, Dimensions, FlatList, ScrollView, TouchableOpacity } from 'react-native';
+import { View, TextInput, Dimensions, FlatList, ScrollView, TouchableOpacity, Modal, Text, Textarea, Button } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Container, Header, Tab, Tabs, ScrollableTab } from 'native-base';
