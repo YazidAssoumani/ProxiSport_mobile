@@ -156,7 +156,7 @@ export default class Dashboard extends Component<Props> {
         return (
             <View style={{flex:1}}>
 
-                <Modal   
+                {/* <Modal   
                     animationType="slide"
                     transparent={false}
                     visible={this.state.modalVisible}
@@ -220,7 +220,7 @@ export default class Dashboard extends Component<Props> {
                             </TouchableOpacity>    
                         </View>
                     </View>
-                </Modal>
+                </Modal> */}
 
                 <MapView style={styles.map}
                 provider={PROVIDER_GOOGLE} 
