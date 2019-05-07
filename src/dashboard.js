@@ -11,6 +11,8 @@ export default class Dashboard extends Component<Props> {
     map = null ;
     mapInput = null ;
     state = {
+        comment:"",
+        note:0,
         type : null,
         coords : {
             latitude: 46.1531,
@@ -37,7 +39,9 @@ export default class Dashboard extends Component<Props> {
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
       }
-
+    note(note) {
+        this.setState({note : note})
+    }
 
   closeModal() {
     this.setState({modalVisible:false});
@@ -53,14 +57,6 @@ export default class Dashboard extends Component<Props> {
             (this.state.type ? ('&type=' + this.state.type) : '');
             console.log(url)              
         
-        // else{
-        // var url = 'http://proxisport.it-students.fr/map?'+
-        // 'boundsNE[lat]=' + (region.latitude + region.latitudeDelta).toString() + 
-        // '&boundsNE[lng]=' + (region.longitude + region.longitudeDelta).toString() + 
-        // '&boundsSW[lat]=' + (region.latitude - region.latitudeDelta).toString() + 
-        // '&boundsSW[lng]=' + (region.longitude - region.longitudeDelta).toString() ;
-        // console.log(url)
-        // }
         fetch(url, {
            method: 'GET',
            credentials: 'same-origin',
@@ -123,10 +119,109 @@ export default class Dashboard extends Component<Props> {
                   throw error;
                 })
         }
+
+        _onPressHandleComment(data){
+    //            console.log(arguments)
+    //            console.log(this.state.coords)
+                console.log(this.mapInput)
+    
+                var comment = {
+                    comment: this.state.comment,
+                    note: this.state.note,
+                    } ;
+                fetch(
+                    // 'http://192.168.33.11:3000/comment/'+this.state.currentMarker._id, {
+                        'http://proxisport.it-students.fr/comment/'+this.state.currentMarker._id, {
+    
+                        method:'POST',
+                        headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(comment),
+                    })
+                    .then((response) => response.json())
+                    .then((datas)=>{
+                        console.log(datas);
+                        var currentMarker = this.state.currentMarker ;
+                        var comments = currentMarker.comments || [] ;
+                        comments.push(comment) ;
+                        currentMarker.comments = comments ;
+                        this.setState({currentMarker:currentMarker});
+                        // afficher le commentaire
+                    })
+            }
     
     render() {
         return (
             <View style={{flex:1}}>
+
+                <Modal   
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.modalVisible}
+                    style={{paddingTop:130}}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                    }}>
+                    <View style={{marginTop: 82}}>
+                        <View style={{textAlign:"center"}}>
+                            <Text style={styles.text} style={{textAlign:"center"}}> Déscription de l'endroit:
+                            {'\n'+this.state.currentMarker.nom+ '\n'}
+                            {this.state.currentMarker.AnneeServiceLib+ '\n'}
+                            {this.state.currentMarker.NatureLibelle+ '\n'}
+                            {this.state.currentMarker.NatureSolLib}
+                            </Text>
+                            {
+                                this.state.currentMarker && this.state.currentMarker.comments && this.state.currentMarker.comments.length ?
+                                (
+                                    this.state.currentMarker.comments.map(commentaire => {
+                                        return (
+                                            <Text>{commentaire.comment}</Text>
+                                        )
+                                    })
+                                ) : null
+                            }
+
+                            <Text>Votre Commentaire :</Text>
+                            <Textarea 
+                                rowSpan={5} 
+                                bordered placeholder="Textarea"
+                                onChangeText={(text)=>{this.setState({comment:text})}}
+                                />
+                            <Text>Votre note :</Text>
+                            <View style={{flexDirection:'row'}}>
+
+                            <TouchableOpacity onPress={()=>{this.note(1)}}>
+                                <Icon type='FontAwesome' name={this.state.note >= 1?'star':'star-o'} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={()=>{this.note(2)}}>
+                                <Icon type='FontAwesome' name={this.state.note >= 2?'star':'star-o'} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={()=>{this.note(3)}}>
+                                <Icon type='FontAwesome' name={this.state.note >= 3?'star':'star-o'} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={()=>{this.note(4)}}>
+                                <Icon type='FontAwesome' name={this.state.note >= 4?'star':'star-o'} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={()=>{this.note(5)}}>
+                                <Icon type='FontAwesome' name={this.state.note >= 5?'star':'star-o'} />
+                            </TouchableOpacity>
+                            </View>
+                            <Button block success onPress={this._onCreate.bind(this)}>
+                                <Text>Enregistrer</Text>
+                            </Button> 
+            
+                            <TouchableOpacity style={{justifyContent:"center"}} onPress={() => {
+                                this.setState({modalVisible: false})
+                                } }>
+
+                            <Text style={styles.text_button }> close </Text>
+                            </TouchableOpacity>    
+                        </View>
+                    </View>
+                </Modal>
+
                 <MapView style={styles.map}
                 provider={PROVIDER_GOOGLE} 
                 initialRegion={this.state.coords}
